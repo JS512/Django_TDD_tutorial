@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from .forms import NewTaskForm
 from .models import Task
 
 # Create your tests here.
@@ -53,8 +54,30 @@ class DetailPageTest(TestCase) :
 
 
 class NewPageTest(TestCase) :
+    def setUp(self) :
+        self.form = NewTaskForm
     def test_new_page_returns_correct_response(self) :
         response = self.client.get('/new/')
 
         self.assertTemplateUsed(response, 'task/new.html')
         self.assertEqual(response.status_code, 200)
+
+    def test_form_can_be_valid(self) :
+        self.assertTrue(issubclass(self.form, NewTaskForm))
+        self.assertTrue('title' in self.form.Meta.fields)
+        self.assertTrue('description' in self.form.Meta.fields)
+
+        form = self.form({
+            'title': 'The title',
+            'description' : 'The Description'
+        })
+
+        self.assertTrue(form.is_valid())
+
+
+    def test_new_page_form_rednering(self) :
+        response = self.client.get('/new/')
+
+        self.assertContains(response, '<form')
+        self.assertContains(response, 'csrfmiddlewaretoken')
+        self.assertContains(response, '<label for')

@@ -1,9 +1,11 @@
 from django.urls import path
-from task.views import TTTT
+from task.views import Index, Detail, AAA
+
 from . import views
 
 urlpatterns = [
-    path('', TTTT.as_view(), name='index'),
-    path('new/', TTTT.as_view(), name='new'),
-    path('<int:pk>/', TTTT.as_view(), name="detail")   
+    path('', Index.as_view(), name='index'),
+    path('<int:pk>/', Detail.as_view(), name="detail"), 
+    path('new/', AAA.as_view(), name='new'),
+     
 ]
