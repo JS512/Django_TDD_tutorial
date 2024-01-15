@@ -1,17 +1,21 @@
 from django.shortcuts import render
 
 from .models import Task
+from django.views import View
 
 # Create your views here.
-def index(request) :
-    tasks = Task.objects.all()
-    return render(request, 'task/index.html', {'tasks' : tasks})
+class TTTT(View) :    
 
-def detail(request, pk) :
-    task = Task.objects.get(pk=pk)
+    def get(self, request, *args, **kwargs) :
+        print(kwargs)
+        print(args)
+        
+        tasks = Task.objects.all()
+        return render(request, 'task/index.html', {'tasks' : tasks})
 
-    return render(request, 'task/detail.html', {'task' : task})
+    def detail(self, request, pk) :
+        task = Task.objects.get(pk=pk)
+        return render(request, 'task/detail.html', {'task' : task})
 
-
-def new(request) :
-    return render(request, 'task/new.html')
+    def new(self, request) :
+        return render(request, 'task/new.html')
